@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Graphic design portfolio" />
+  <title>GUAN-RU CHEN — Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body id="pageTop">
+  <header class="site-header">
+    <div class="brand-group">
+      <a class="brand" href="#top" aria-label="首頁">GUAN-RU CHEN</a>
+      <a class="nav-link" href="about.html">[關於我 ABOUT ME]</a>
+    </div>
+    <p class="site-role">GRAPHIC DESIGN PORTFOLIO</p>
+  </header>
+
+  <main id="top">
+    <section class="intro">
+      <div>
+        <p class="eyebrow">SELECTED WORKS</p>
+        <h1>平面設計與<br>視覺編排作品集</h1>
+      </div>
+      <p class="intro-copy">已具備近10年平面設計經驗，專注於電商圖文、平面廣告文宣與包裝編排，熟悉從版面製作、印刷完稿到輸出的完整流程，並具展場視覺製作經驗。<br>軟體技能：Adobe (PhotoShop、Illustrator)<br>專長：平面設計、影像處理、圖文編輯。</p>
+    </section>
+
+    <nav class="filters" id="filterNav" aria-label="作品分類">
+      <button class="filter active" data-filter="all">全部</button>
+      <!-- 其餘分類按鈕由 script.js 依 data.js 的 CATEGORY_ORDER 自動產生，不需要手動編輯這裡 -->
+    </nav>
+
+    <section class="works-section">
+      <div class="works-meta"><p id="resultLabel">全部作品</p><p id="resultCount"></p></div>
+      <div id="worksGrid" class="works-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>© <span id="currentYear"></span> GUAN-RU CHEN</span>
+    <span>本站所有圖片僅作為設計師作品展示用，版權皆歸屬原公司/案主所有，切勿私自竊取盜用！</span>
+  </footer>
+
+  <button id="backToTop" class="back-to-top" aria-label="回到頁面頂端">↑</button>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+    <button id="closeLightbox" class="lightbox-close" aria-label="關閉">×</button>
+    <div class="lightbox-main">
+      <button id="prevImage" class="lightbox-nav prev" aria-label="上一張">‹</button>
+      <img id="lightboxImage" alt="" />
+      <button id="nextImage" class="lightbox-nav next" aria-label="下一張">›</button>
+    </div>
+    <aside class="lightbox-info">
+      <p id="lightboxCounter" class="lightbox-counter"></p>
+      <p id="lightboxYear" class="lightbox-year"></p>
+      <h2 id="lightboxTitle"></h2>
+      <p id="lightboxCategory" class="lightbox-category"></p>
+      <p id="lightboxDescription" class="lightbox-description"></p>
+      <div id="lightboxThumbs" class="lightbox-thumbs"></div>
+    </aside>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
