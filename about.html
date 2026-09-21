@@ -42,7 +42,7 @@
           <div>
             <p class="timeline-role">視覺設計專員</p>
             <p class="timeline-org">生技科技研發公司 | 生技產業</p>
-            <p class="timeline-desc">‧ 產品彩盒、鋁袋包裝、標貼、產品型錄、DM、雜誌廣告頁與邀請卡等設計。<br>
+            <p class="timeline-desc">‧ 產品彩盒、鋁袋包裝、產品型錄、雜誌廣告頁與邀請卡等設計。<br>
               ‧ 國內外展覽大圖輸出海報、燈箱設計。<br>‧ 公司官網、產品網站及社群網站的更新維護。<br>‧ 展覽期間相關行政處理（如協助場地布置、各式行前物品準備，對外廠商接洽等）。</p>
           </div>
         </div>
@@ -168,7 +168,9 @@
       if(years>0) return `${years}年`;
       return `${months}個月`;
     }
-    document.querySelectorAll(".timeline-period").forEach(el=>{
+    // 學歷區塊(.about-education)的日期不參與自動計算年資，如果之後還有
+    // 其他區塊也不想被計算，把對應區塊的 class 也加進下面這個排除清單。
+    document.querySelectorAll(".about-section:not(.about-education) .timeline-period").forEach(el=>{
       const duration=calcDuration(el.textContent);
       if(duration){
         const span=document.createElement("span");
