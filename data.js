@@ -82,8 +82,8 @@ const works=[
 
 {id:"e01",title:"購物平台濾油壺圖文設計",category:"ecommerce",year:"2023",importance:"featured",description:"此為購物平台電腦與手機介面圖文介紹編排設計，依據產品色系搭配清晰產品特色說明。",width:2000,height:1250,images:["images/ecommerce/e01-01.jpg"]},
 {id:"e02",title:"購物平台過濾器圖文設計",category:"ecommerce",year:"2021",importance:"normal",description:"透過細部標示說明產品各部位規格與材質，並結合過濾原理圖解，規劃符合電腦與手機介面的圖文排版。",width:2000,height:1250,images:["images/ecommerce/e02-01.jpg","images/ecommerce/e02-02.jpg","images/ecommerce/e02-03.jpg"]},
-{id:"e03",title:"官方LINE@廣告宣傳",category:"ecommerce",year:"2021~2023",importance:"normal",description:"品牌官方社群廣告設計。"width:625,height:1000,images:["images/ecommerce/e03-01.jpg","images/ecommerce/e03-02.jpg","images/ecommerce/e03-03.jpg","images/ecommerce/e03-04.jpg"]},
+{id:"e03",title:"官方LINE@廣告宣傳",category:"ecommerce",year:"2021~2023",importance:"normal",description:"品牌官方社群廣告設計。",width:625,height:1000,images:["images/ecommerce/e03-01.jpg","images/ecommerce/e03-02.jpg","images/ecommerce/e03-03.jpg","images/ecommerce/e03-04.jpg"]},
 {id:"e04",title:"Facebook產品限時動態廣告",category:"ecommerce",year:"2023",importance:"normal",description:"母親節活動產品限時動態廣告設計。",width:941,height:1339,images:["images/ecommerce/e04-01.jpg","images/ecommerce/e04-02.jpg","images/ecommerce/e04-03.jpg"]},
-{id:"e05",title:"品牌官網首頁廣告Banner",category:"ecommerce",year:"2020~2022",importance:"normal",description:"多款活動宣傳廣告Banner設計。"width:1000,height:551,images:["images/ecommerce/e05-01.jpg","images/ecommerce/e05-02.jpg","images/ecommerce/e05-03.jpg","images/ecommerce/e05-04.jpg"]},
+{id:"e05",title:"品牌官網首頁廣告Banner",category:"ecommerce",year:"2020~2022",importance:"normal",description:"多款活動宣傳廣告Banner設計。",width:1000,height:551,images:["images/ecommerce/e05-01.jpg","images/ecommerce/e05-02.jpg","images/ecommerce/e05-03.jpg","images/ecommerce/e05-04.jpg"]},
 {id:"e06",title:"購物平台抗菌噴劑圖文設計",category:"ecommerce",year:"2021",importance:"normal",description:"此為購物平台手機介面展示，除獨立編排設計圖文介紹外，亦負責繪製載體技術圖。",width:1000,height:1000,images:["images/ecommerce/e06-01.jpg"]}
 ];
