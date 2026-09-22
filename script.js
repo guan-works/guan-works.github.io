@@ -63,11 +63,21 @@ document.addEventListener("error",e=>{
   }
 },true);
 
-function tileMarkup(w){
+// isFirst：true 代表這是目前畫面上第一張要顯示的圖片，也就是瀏覽器會判定
+// 的「LCP 主視覺圖」。這張圖片改成優先載入（拿掉 lazy、加上
+// fetchpriority="high"），讓瀏覽器一開始就用最高優先權去下載這一張；其餘
+// 圖片維持原本的 loading="lazy" 延遲載入，避免整批圖片一開始就搶著下載。
+// w.width / w.height（data.js 裡如果有填這件作品第一張圖片的實際像素寬高）
+// 會輸出成 <img> 的 width / height 屬性，讓瀏覽器在圖片還沒下載完成前就能
+// 先算出正確的顯示高度、預留版面空間，減少下面作品被突然往下推的畫面跳動
+// 感（CLS）。沒有填 width/height 的作品，行為跟以前完全一樣，不會出錯。
+function tileMarkup(w,isFirst){
   const fb=getWorkFallback(w);
   const featuredClass=w.importance==="featured"?" featured":"";
   const multi=w.images.length>1?`<span class="image-count-badge"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>${w.images.length}</span>`:"";
-  return `<article class="work-tile${featuredClass}" data-id="${w.id}"><img src="${w.images[0]}" data-fallback="${fb}" alt="${w.title}" loading="lazy">${multi}<div class="work-overlay"><div><h3>${w.title}</h3><p>${w.year}</p></div><span class="tile-category">${categoryNames[w.category]}</span></div></article>`;
+  const sizeAttr=(w.width&&w.height)?` width="${w.width}" height="${w.height}"`:"";
+  const loadAttr=isFirst?` loading="eager" fetchpriority="high"`:` loading="lazy"`;
+  return `<article class="work-tile${featuredClass}" data-id="${w.id}"><img src="${w.images[0]}" data-fallback="${fb}" alt="${w.title}"${sizeAttr}${loadAttr}>${multi}<div class="work-overlay"><div><h3>${w.title}</h3><p>${w.year}</p></div><span class="tile-category">${categoryNames[w.category]}</span></div></article>`;
 }
 function bindTileClicks(){grid.querySelectorAll(".work-tile[data-id]").forEach(t=>t.addEventListener("click",()=>openLightbox(works.find(w=>w.id===t.dataset.id))))}
 // 分類篩選按鈕維持中文（避免中英合併太長），但空間比較大的地方
@@ -110,10 +120,12 @@ function render(filter){
   if(!filtered.length){grid.innerHTML='<div class="empty-state">目前尚無作品。</div>';return}
   if(MOBILE_QUERY.matches){
     // Mobile：單欄「圖在上、文字在下」直式清單
-    grid.innerHTML=orderWorksMobile(filtered).map(tileMarkup).join("");
+    // (w,i)=>tileMarkup(w,i===0)：只有排在最前面（畫面第一個）的作品會被標成
+    // isFirst＝優先載入，其餘作品維持原本的 lazy 延遲載入。
+    grid.innerHTML=orderWorksMobile(filtered).map((w,i)=>tileMarkup(w,i===0)).join("");
   }else{
     // Desktop：多欄自適應排版，主打作品滿版、其餘照 seed 排序流入多欄
-    grid.innerHTML=orderWorks(filtered).map(tileMarkup).join("");
+    grid.innerHTML=orderWorks(filtered).map((w,i)=>tileMarkup(w,i===0)).join("");
   }
   bindTileClicks();
 }
