@@ -61,13 +61,20 @@ main{max-width:var(--max);margin:auto;padding:0 clamp(20px,5vw,72px) 60px}.intro
 .work-overlay h3{font-size:14px;font-weight:700}
 .work-overlay p{font-size:11px;color:var(--muted);opacity:1;margin-top:0}
 .tile-category{display:block;font-size:11px;color:var(--muted)}
-.lightbox{padding:15px}.lightbox.open{display:flex;flex-direction:column;gap:8px;overflow-y:auto}.lightbox-main{height:56vh;height:56dvh;flex-shrink:0}.lightbox-main>img{max-height:56vh;max-height:56dvh}.lightbox-info{padding:0;min-height:0}.lightbox-info h2{font-size:22px}.lightbox-description{font-size:12px}
-/* 手機版燈箱：原本縮圖列排在說明文字後面，說明文字一長就會被擠出畫面
-   看不到，這裡改用 flex 的 order 把縮圖列「視覺上」移到標題／分類下方、
-   說明文字上方，縮圖永遠看得到；DOM 順序不變，不影響桌機版跟無障礙閱讀
-   順序。捲動改成只交給最外層的 .lightbox.open 處理（單一捲軸），不要
-   讓裡面的文字區塊自己再設一層捲軸——兩層捲軸互相獨立反而會卡住，
-   內容明明還沒跑完卻被自己的小框卡死看不到，這是前一版的問題所在。 */
+.lightbox{padding:15px 15px calc(70px + env(safe-area-inset-bottom,0px)) 15px}.lightbox.open{display:flex;flex-direction:column;gap:8px;overflow-y:auto}.lightbox-main{height:56vh;height:56dvh;flex-shrink:0}.lightbox-main>img{max-height:56vh;max-height:56dvh}.lightbox-info{padding:0;min-height:0}.lightbox-info h2{font-size:22px}.lightbox-description{font-size:12px}
+/* 手機版燈箱：不同瀏覽器（Bing、Brave 等）自己在畫面最下面加的工具列
+   高度不一致，沒辦法用程式精準算出每一款瀏覽器的實際高度，所以改成
+   在捲動區塊最下面（.lightbox 的 padding-bottom）預留約 70px 的安全
+   空間，確保不管哪款瀏覽器、工具列多高，捲到底時內容都已經完整跑出
+   來、不會被蓋住；代價是在正常瀏覽器上捲到底會多一小段空白，這是
+   可以接受的犧牲。env(safe-area-inset-bottom) 則是額外處理 iPhone
+   底部手勢列那一小截空間，沒有的話會自動當作 0，不影響其他裝置。
+   ------------------------------------------------------------
+   原本縮圖列排在說明文字後面，說明文字一長就會被擠出畫面看不到，這裡
+   改用 flex 的 order 把縮圖列「視覺上」移到標題／分類下方、說明文字
+   上方，縮圖永遠看得到；DOM 順序不變，不影響桌機版跟無障礙閱讀順序。
+   捲動只交給最外層的 .lightbox.open 處理（單一捲軸），不要讓裡面的
+   文字區塊自己再設一層捲軸——兩層捲軸互相獨立反而會卡住。 */
 .lightbox-counter,.lightbox-year{order:1}
 .lightbox-info h2{order:2}
 .lightbox-category{order:3}
