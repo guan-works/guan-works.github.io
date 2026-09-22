@@ -61,12 +61,13 @@ main{max-width:var(--max);margin:auto;padding:0 clamp(20px,5vw,72px) 60px}.intro
 .work-overlay h3{font-size:14px;font-weight:700}
 .work-overlay p{font-size:11px;color:var(--muted);opacity:1;margin-top:0}
 .tile-category{display:block;font-size:11px;color:var(--muted)}
-.lightbox{padding:15px}.lightbox.open{display:flex;flex-direction:column;gap:8px}.lightbox-main{height:56vh}.lightbox-main>img{max-height:56vh}.lightbox-info{padding:0;min-height:0;max-height:calc(44vh - 38px);overflow-y:auto}.lightbox-info h2{font-size:22px}.lightbox-description{font-size:12px}
+.lightbox{padding:15px}.lightbox.open{display:flex;flex-direction:column;gap:8px;overflow-y:auto}.lightbox-main{height:56vh;flex-shrink:0}.lightbox-main>img{max-height:56vh}.lightbox-info{padding:0;min-height:0}.lightbox-info h2{font-size:22px}.lightbox-description{font-size:12px}
 /* 手機版燈箱：原本縮圖列排在說明文字後面，說明文字一長就會被擠出畫面
    看不到，這裡改用 flex 的 order 把縮圖列「視覺上」移到標題／分類下方、
    說明文字上方，縮圖永遠看得到；DOM 順序不變，不影響桌機版跟無障礙閱讀
-   順序。說明文字如果真的很長，會在自己的區塊內捲動（見上面 .lightbox-info
-   的 max-height + overflow-y:auto），不會再把縮圖推到畫面外。 */
+   順序。捲動改成只交給最外層的 .lightbox.open 處理（單一捲軸），不要
+   讓裡面的文字區塊自己再設一層捲軸——兩層捲軸互相獨立反而會卡住，
+   內容明明還沒跑完卻被自己的小框卡死看不到，這是前一版的問題所在。 */
 .lightbox-counter,.lightbox-year{order:1}
 .lightbox-info h2{order:2}
 .lightbox-category{order:3}
