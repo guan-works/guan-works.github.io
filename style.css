@@ -61,26 +61,30 @@ main{max-width:var(--max);margin:auto;padding:0 clamp(20px,5vw,72px) 60px}.intro
 .work-overlay h3{font-size:14px;font-weight:700}
 .work-overlay p{font-size:11px;color:var(--muted);opacity:1;margin-top:0}
 .tile-category{display:block;font-size:11px;color:var(--muted)}
-.lightbox{padding:15px 15px calc(70px + env(safe-area-inset-bottom,0px)) 15px}.lightbox.open{display:flex;flex-direction:column;gap:8px;overflow-y:auto}.lightbox-main{height:56vh;height:56dvh;flex-shrink:0}.lightbox-main>img{max-height:56vh;max-height:56dvh}.lightbox-info{padding:0;min-height:0}.lightbox-info h2{font-size:22px}.lightbox-description{font-size:12px}
+.lightbox{padding:15px 15px calc(70px + env(safe-area-inset-bottom,0px)) 15px}.lightbox.open{display:flex;flex-direction:column;gap:8px;overflow-y:auto}.lightbox-main{height:56vh;height:56dvh;flex-shrink:0}.lightbox-main>img{max-height:56vh;max-height:56dvh}.lightbox-description{font-size:12px}
 /* 手機版燈箱：不同瀏覽器（Bing、Brave 等）自己在畫面最下面加的工具列
-   高度不一致，沒辦法用程式精準算出每一款瀏覽器的實際高度，所以改成
-   在捲動區塊最下面（.lightbox 的 padding-bottom）預留約 70px 的安全
-   空間，確保不管哪款瀏覽器、工具列多高，捲到底時內容都已經完整跑出
-   來、不會被蓋住；代價是在正常瀏覽器上捲到底會多一小段空白，這是
-   可以接受的犧牲。env(safe-area-inset-bottom) 則是額外處理 iPhone
-   底部手勢列那一小截空間，沒有的話會自動當作 0，不影響其他裝置。
+   高度不一致，沒辦法用程式精準算出每一款瀏覽器的實際高度，所以在捲動
+   區塊最下面（.lightbox 的 padding-bottom）預留約 70px 的安全空間，
+   確保不管哪款瀏覽器、工具列多高，捲到底時內容都已經完整跑出來、不會
+   被蓋住；代價是在正常瀏覽器上捲到底會多一小段空白，這是可以接受的
+   犧牲。env(safe-area-inset-bottom) 則是額外處理 iPhone 底部手勢列
+   那一小截空間，沒有的話會自動當作 0，不影響其他裝置。
    ------------------------------------------------------------
-   原本縮圖列排在說明文字後面，說明文字一長就會被擠出畫面看不到，這裡
-   改用 flex 的 order 把縮圖列「視覺上」移到標題／分類下方、說明文字
-   上方，縮圖永遠看得到；DOM 順序不變，不影響桌機版跟無障礙閱讀順序。
-   捲動只交給最外層的 .lightbox.open 處理（單一捲軸），不要讓裡面的
-   文字區塊自己再設一層捲軸——兩層捲軸互相獨立反而會卡住。 */
-.lightbox-counter,.lightbox-year{order:1}
-.lightbox-info h2{order:2}
-.lightbox-category{order:3}
-.lightbox-thumbs{order:4}
-.lightbox-description{order:5}
-.lightbox-thumbs{margin-top:8px;padding-top:8px;flex-shrink:0}.lightbox-nav{width:38px;height:48px}.site-footer{padding:22px 20px;font-size:9px}
+   資訊區塊改用 CSS Grid（不是原本桌機版沿用的 flex 直排），把「張數」
+   跟「年份」排在同一行左邊、「分類」放在同一行右邊，標題、縮圖列、
+   說明文字則各自獨立一整行、由上到下排列；不需要新增任何 HTML 元素，
+   純粹用 grid-column / grid-row 指定每個既有欄位要出現在哪一格。這樣
+   原本三行（張數、年份、分類）壓縮成一行，加上拿掉原本較寬鬆的留白
+   間距，整體上半部會變矮，讓下方說明文字能提早開始顯示，滑動距離也
+   跟著變短。捲動仍然只交給最外層的 .lightbox.open 處理（單一捲軸）。 */
+.lightbox-info{padding:0;min-height:0;display:grid;grid-template-columns:auto auto 1fr auto;column-gap:8px;row-gap:5px}
+.lightbox-counter{grid-column:1;grid-row:1;margin:0}
+.lightbox-year{grid-column:2;grid-row:1;margin:0}
+.lightbox-category{grid-column:4;grid-row:1;margin:0;text-align:right;justify-self:end}
+.lightbox-info h2{grid-column:1/-1;grid-row:2;font-size:20px;line-height:1.15;margin:0}
+.lightbox-thumbs{grid-column:1/-1;grid-row:3;margin-top:0;padding-top:0;flex-shrink:0}
+.lightbox-description{grid-column:1/-1;grid-row:4}
+.lightbox-nav{width:38px;height:48px}.site-footer{padding:22px 20px;font-size:9px}
 .about-hero{display:block;padding:58px 0 42px}.about-intro{margin-top:24px;max-width:none}
   .about-section{display:block;padding:34px 0}.about-section-head{gap:12px;margin-bottom:24px}.about-section-index{margin-top:2px}.about-section h2{font-size:21px}
   .timeline-item{grid-template-columns:1fr;gap:7px;padding-bottom:24px;margin-bottom:24px}.timeline-period{padding-top:0;text-align:left}.timeline-role{font-size:16px}.timeline-desc{font-size:12px;line-height:1.85}
