@@ -76,8 +76,11 @@ main{max-width:var(--max);margin:auto;padding:0 clamp(20px,5vw,72px) 60px}.intro
    純粹用 grid-column / grid-row 指定每個既有欄位要出現在哪一格。這樣
    原本三行（張數、年份、分類）壓縮成一行，加上拿掉原本較寬鬆的留白
    間距，整體上半部會變矮，讓下方說明文字能提早開始顯示，滑動距離也
-   跟著變短。捲動仍然只交給最外層的 .lightbox.open 處理（單一捲軸）。 */
-.lightbox-info{padding:0;min-height:0;display:grid;grid-template-columns:auto auto 1fr auto;column-gap:8px;row-gap:5px}
+   跟著變短。捲動仍然只交給最外層的 .lightbox.open 處理（單一捲軸），
+   所以這裡額外用 flex-shrink:0 + overflow:visible 蓋掉桌機版原本設
+   在 .lightbox-info 上的 overflow-y:auto，避免這個區塊在空間不夠時
+   被外層硬壓扁——這正是縮圖列一度忽隱忽現、被壓扁的原因。 */
+.lightbox-info{padding:0;min-height:0;flex-shrink:0;overflow:visible;display:grid;grid-template-columns:auto auto 1fr auto;column-gap:8px;row-gap:5px}
 .lightbox-counter{grid-column:1;grid-row:1;margin:0}
 .lightbox-year{grid-column:2;grid-row:1;margin:0}
 .lightbox-category{grid-column:4;grid-row:1;margin:0;text-align:right;justify-self:end}
