@@ -63,6 +63,21 @@ document.addEventListener("error",e=>{
   }
 },true);
 
+// 縮圖路徑自動轉換：規則是「原圖檔名 + t，統一放在 images/thumbs/ 資料夾」，
+// 例如 images/ecommerce/e02-01.jpg → images/thumbs/e02-01t.jpg。只要縮圖
+// 照這個規則命名，這裡就會自動算出對應路徑，不用在 data.js 每件作品手動填
+// 縮圖欄位。主打作品（importance:"featured"）維持使用原圖，不套用這個規則
+// ——因為主打作品是整排滿版全寬呈現，尺寸比一般磚塊大很多，縮圖畫質會不夠。
+function thumbSrc(path,w){
+  if(w.importance==="featured")return path;
+  const slash=path.lastIndexOf("/");
+  const folder=path.slice(0,slash+1);
+  const filename=path.slice(slash+1);
+  const dot=filename.lastIndexOf(".");
+  const thumbName=dot===-1?filename+"t":filename.slice(0,dot)+"t"+filename.slice(dot);
+  return "images/thumbs/"+thumbName;
+}
+
 // isFirst：true 代表這是目前畫面上第一張要顯示的圖片，也就是瀏覽器會判定
 // 的「LCP 主視覺圖」。這張圖片改成優先載入（拿掉 lazy、加上
 // fetchpriority="high"），讓瀏覽器一開始就用最高優先權去下載這一張；其餘
@@ -71,13 +86,15 @@ document.addEventListener("error",e=>{
 // 會輸出成 <img> 的 width / height 屬性，讓瀏覽器在圖片還沒下載完成前就能
 // 先算出正確的顯示高度、預留版面空間，減少下面作品被突然往下推的畫面跳動
 // 感（CLS）。沒有填 width/height 的作品，行為跟以前完全一樣，不會出錯。
+// 首頁封面圖改用 thumbSrc() 抓縮圖（主打作品除外，見上方 thumbSrc 說明），
+// 縮圖檔案不存在或抓不到時，一樣會自動改顯示暫用色塊，不會破圖。
 function tileMarkup(w,isFirst){
   const fb=getWorkFallback(w);
   const featuredClass=w.importance==="featured"?" featured":"";
   const multi=w.images.length>1?`<span class="image-count-badge"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>${w.images.length}</span>`:"";
   const sizeAttr=(w.width&&w.height)?` width="${w.width}" height="${w.height}"`:"";
   const loadAttr=isFirst?` loading="eager" fetchpriority="high"`:` loading="lazy"`;
-  return `<article class="work-tile${featuredClass}" data-id="${w.id}"><img src="${w.images[0]}" data-fallback="${fb}" alt="${w.title}"${sizeAttr}${loadAttr}>${multi}<div class="work-overlay"><div><h3>${w.title}</h3><p>${w.year}</p></div><span class="tile-category">${categoryNames[w.category]}</span></div></article>`;
+  return `<article class="work-tile${featuredClass}" data-id="${w.id}"><img src="${thumbSrc(w.images[0],w)}" data-fallback="${fb}" alt="${w.title}"${sizeAttr}${loadAttr}>${multi}<div class="work-overlay"><div><h3>${w.title}</h3><p>${w.year}</p></div><span class="tile-category">${categoryNames[w.category]}</span></div></article>`;
 }
 function bindTileClicks(){grid.querySelectorAll(".work-tile[data-id]").forEach(t=>t.addEventListener("click",()=>openLightbox(works.find(w=>w.id===t.dataset.id))))}
 // 分類篩選按鈕維持中文（避免中英合併太長），但空間比較大的地方
@@ -160,7 +177,7 @@ function renderLightbox(){
   currentWork.images.forEach((src,i)=>{
     const b=document.createElement("button");
     b.className="thumb "+(i===currentIndex?"active":"");
-    b.innerHTML=`<img src="${src}" data-fallback="${fb}" alt="${currentWork.title} ${i+1}">`;
+    b.innerHTML=`<img src="${thumbSrc(src,currentWork)}" data-fallback="${fb}" alt="${currentWork.title} ${i+1}">`;
     b.onclick=()=>{currentIndex=i;renderLightbox()};
     lbThumbs.appendChild(b);
   });
