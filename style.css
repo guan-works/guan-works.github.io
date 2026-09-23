@@ -3,7 +3,16 @@
 .site-header{max-width:var(--max);margin:auto;padding:30px clamp(20px,5vw,72px);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.brand-group{display:flex;align-items:center;gap:20px}.brand{color:var(--ink);text-decoration:none;font-size:18px;font-weight:700;letter-spacing:.03em}.brand span{color:var(--milk-tea-dark)}.nav-link{font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:.06em;padding-bottom:2px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}.nav-link:hover,.nav-link.active{color:var(--milk-tea-dark);border-color:var(--milk-tea-dark)}.site-role{margin:0;font-size:10px;letter-spacing:.14em;color:var(--muted)}
 main{max-width:var(--max);margin:auto;padding:0 clamp(20px,5vw,72px) 60px}.intro{padding:clamp(50px,9vw,130px) 0 46px;display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:end}.eyebrow{font-size:11px;letter-spacing:.15em;color:var(--muted);margin:0 0 14px}h1{font-size:clamp(36px,5vw,76px);line-height:1.05;letter-spacing:-.055em;margin:0;font-weight:600}.intro-copy{font-size:14px;line-height:1.9;color:var(--muted);margin:0;max-width:430px}
 .filters{display:flex;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:20px}.filter{border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);padding:9px 17px;cursor:pointer;font-size:13px;transition:background .2s,border-color .2s,color .2s}.filter:hover{border-color:var(--milk-tea-dark);color:var(--milk-tea-dark);background:#eee5da}.filter.active{border-color:var(--milk-tea);color:#fff;background:var(--milk-tea-dark)}.works-section{padding-top:18px}.works-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:16px}.works-meta p{margin:0}
-.works-grid{column-count:3;column-gap:var(--gap)}
+/* 作品磚牆的內容是靠 script.js 在網頁載入後才動態填進來的，一開始這個
+   區塊是空的，填入內容的瞬間會把下面的頁尾推下去一大截，這是目前
+   CLS（畫面跳動分數）的主要來源。這裡先給一個大概一個螢幕高度的
+   min-height 當緩衝，讓頁尾一開始就不會貼在太高的位置，藉此縮短
+   「跳動的距離」；等真正內容填進來、高度超過這個緩衝值，圖片本身
+   就會撐開足夠的高度，這行 min-height 就不會有作用了，不影響正常
+   顯示。這不是完美的解法（真正的完美解法需要把作品磚塊直接寫死在
+   index.html，但那樣以後新增作品就不能只改 data.js 了），只是用
+   很低的成本換取分數上的緩解。 */
+.works-grid{column-count:3;column-gap:var(--gap);min-height:100vh}
 @media(max-width:1200px) and (min-width:901px){.works-grid{column-count:2}}
 .work-tile{position:relative;display:block;break-inside:avoid;margin:0 0 var(--gap);overflow:hidden;border-radius:6px;background:#d7d0c8;cursor:pointer;box-shadow:0 2px 10px rgba(32,28,24,.1);transition:box-shadow .25s}
 .work-tile:hover{box-shadow:0 6px 18px rgba(32,28,24,.16)}
