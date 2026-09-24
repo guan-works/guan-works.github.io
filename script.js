@@ -163,7 +163,33 @@ function closeLightbox(){lb.classList.remove("open");lb.setAttribute("aria-hidde
 function renderLightbox(){
   const multi=currentWork.images.length>1;
   const fb=getWorkFallback(currentWork);
-  lbImage.dataset.fallback=fb;lbImage.src=currentWork.images[currentIndex];lbImage.alt=currentWork.title;
+  const fullSrc=currentWork.images[currentIndex];
+  const previewSrc=thumbSrc(fullSrc,currentWork);
+  const targetWork=currentWork,targetIndex=currentIndex;
+  lbImage.dataset.fallback=fb;lbImage.alt=currentWork.title;
+  // 先秒開縮圖（首頁磚牆已經載過，多半瀏覽器手上已經有現成的），
+  // 讓使用者馬上看到東西、不是空白等待；縮圖跟原圖不同（也就是非
+  // 主打作品）時，背景才另外去下載真正的原圖，下載完成後才無縫換
+  // 上——中途如果使用者已經切到別張圖或關掉燈箱，就不會換錯圖。
+  // 主打作品因為 thumbSrc 回傳的就是原圖本身，這段background 預載
+  // 邏輯會直接略過，維持原本「一次到位」的行為，不會多一次下載。
+  lbImage.src=previewSrc;
+  lbImage.classList.toggle("lb-loading",previewSrc!==fullSrc);
+  if(previewSrc!==fullSrc){
+    const preload=new Image();
+    preload.onload=()=>{
+      if(currentWork===targetWork&&currentIndex===targetIndex){
+        lbImage.src=fullSrc;
+        lbImage.classList.remove("lb-loading");
+      }
+    };
+    preload.onerror=()=>{
+      if(currentWork===targetWork&&currentIndex===targetIndex){
+        lbImage.classList.remove("lb-loading");
+      }
+    };
+    preload.src=fullSrc;
+  }
   lbTitle.textContent=currentWork.title;lbCategory.textContent=bilingualCategory(currentWork.category);lbYear.textContent=currentWork.year;
   // 每張圖片可以個別指定說明文字（見 data.js 的 imageDescriptions 欄位），
   // 沒有特別指定的圖片（或整件作品都沒設定這個欄位）就自動使用共用的

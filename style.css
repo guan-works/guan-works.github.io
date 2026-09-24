@@ -5,14 +5,16 @@ main{max-width:var(--max);margin:auto;padding:0 clamp(20px,5vw,72px) 60px}.intro
 .filters{display:flex;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:20px}.filter{border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);padding:9px 17px;cursor:pointer;font-size:13px;transition:background .2s,border-color .2s,color .2s}.filter:hover{border-color:var(--milk-tea-dark);color:var(--milk-tea-dark);background:#eee5da}.filter.active{border-color:var(--milk-tea);color:#fff;background:var(--milk-tea-dark)}.works-section{padding-top:18px}.works-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:16px}.works-meta p{margin:0}
 /* 作品磚牆的內容是靠 script.js 在網頁載入後才動態填進來的，一開始這個
    區塊是空的，填入內容的瞬間會把下面的頁尾推下去一大截，這是目前
-   CLS（畫面跳動分數）的主要來源。這裡先給一個大概一個螢幕高度的
-   min-height 當緩衝，讓頁尾一開始就不會貼在太高的位置，藉此縮短
-   「跳動的距離」；等真正內容填進來、高度超過這個緩衝值，圖片本身
-   就會撐開足夠的高度，這行 min-height 就不會有作用了，不影響正常
-   顯示。這不是完美的解法（真正的完美解法需要把作品磚塊直接寫死在
-   index.html，但那樣以後新增作品就不能只改 data.js 了），只是用
-   很低的成本換取分數上的緩解。 */
-.works-grid{column-count:3;column-gap:var(--gap);min-height:100vh}
+   CLS（畫面跳動分數）的主要來源。這裡先給一個緩衝高度，讓頁尾一開始
+   就不會貼在太高的位置，藉此縮短「跳動的距離」；等真正內容填進來、
+   高度超過這個緩衝值，圖片本身就會撐開足夠的高度，這行 min-height
+   就不會有作用了，不影響正常顯示。這不是完美的解法（真正的完美解法
+   需要把作品磚塊直接寫死在 index.html，但那樣以後新增作品就不能只
+   改 data.js 了），只是用很低的成本換取分數上的緩解。
+   數值抓 45vh、不是整個螢幕高度：原本抓 100vh 雖然把 CLS 壓到 0，
+   但在網路較慢的情況下，這片空白會讓 Speed Index（畫面感覺填滿的
+   速度）變差，兩者是蹺蹺板關係；45vh 是抓兩者都能兼顧的折衷值。 */
+.works-grid{column-count:3;column-gap:var(--gap);min-height:45vh}
 @media(max-width:1200px) and (min-width:901px){.works-grid{column-count:2}}
 .work-tile{position:relative;display:block;break-inside:avoid;margin:0 0 var(--gap);overflow:hidden;border-radius:6px;background:#d7d0c8;cursor:pointer;box-shadow:0 2px 10px rgba(32,28,24,.1);transition:box-shadow .25s}
 .work-tile:hover{box-shadow:0 6px 18px rgba(32,28,24,.16)}
@@ -54,7 +56,7 @@ main{max-width:var(--max);margin:auto;padding:0 clamp(20px,5vw,72px) 60px}.intro
 .about-contact a{color:var(--milk-tea-dark);text-decoration:none;border-bottom:1px solid var(--milk-tea)}
 .about-contact a:hover{color:var(--ink)}
 .site-footer{max-width:var(--max);margin:auto;padding:25px clamp(20px,5vw,72px);border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:10px;letter-spacing:.1em;color:var(--muted)}
-.lightbox{position:fixed;inset:0;z-index:50;height:100vh;height:100dvh;background:rgba(20,20,19,.94);color:#fff;display:none;grid-template-columns:minmax(0,1fr) minmax(260px,340px);gap:30px;padding:28px;overflow:hidden}.lightbox.open{display:grid}.lightbox-main{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0}.lightbox-main>img{max-width:100%;max-height:82vh;object-fit:contain}.lightbox-close{position:absolute;right:22px;top:15px;z-index:3;border:0;background:transparent;color:#fff;font-size:32px;cursor:pointer}.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:56px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:28px;cursor:pointer}.prev{left:0}.next{right:0}.lightbox-info{padding:48px 0 18px;display:flex;flex-direction:column;min-height:0;overflow-y:auto;overflow-x:hidden}.lightbox-counter,.lightbox-year{font-size:11px;color:#aaa;margin:0 0 8px}.lightbox-year{letter-spacing:.12em;color:#d5d0c9}.lightbox-info h2{font-size:30px;line-height:1.1;margin:5px 0 8px;letter-spacing:-.04em}.lightbox-category{font-size:12px;color:#bbb;margin:0 0 22px}.lightbox-description{font-size:13px;line-height:1.85;color:#ddd;margin:0;white-space:pre-line}.lightbox-thumbs{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden;margin-top:auto;padding-top:22px}.thumb{width:68px;height:54px;flex:0 0 auto;padding:0;border:1px solid transparent;opacity:.55;cursor:pointer;background:none}.thumb.active{opacity:1;border-color:#fff}.thumb img{width:100%;height:100%;object-fit:cover}
+.lightbox{position:fixed;inset:0;z-index:50;height:100vh;height:100dvh;background:rgba(20,20,19,.94);color:#fff;display:none;grid-template-columns:minmax(0,1fr) minmax(260px,340px);gap:30px;padding:28px;overflow:hidden}.lightbox.open{display:grid}.lightbox-main{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0}.lightbox-main>img{max-width:100%;max-height:82vh;object-fit:contain;transition:filter .3s ease}.lightbox-main>img.lb-loading{filter:blur(8px) brightness(.97)}.lightbox-close{position:absolute;right:22px;top:15px;z-index:3;border:0;background:transparent;color:#fff;font-size:32px;cursor:pointer}.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:56px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:28px;cursor:pointer}.prev{left:0}.next{right:0}.lightbox-info{padding:48px 0 18px;display:flex;flex-direction:column;min-height:0;overflow-y:auto;overflow-x:hidden}.lightbox-counter,.lightbox-year{font-size:11px;color:#aaa;margin:0 0 8px}.lightbox-year{letter-spacing:.12em;color:#d5d0c9}.lightbox-info h2{font-size:30px;line-height:1.1;margin:5px 0 8px;letter-spacing:-.04em}.lightbox-category{font-size:12px;color:#bbb;margin:0 0 22px}.lightbox-description{font-size:13px;line-height:1.85;color:#ddd;margin:0;white-space:pre-line}.lightbox-thumbs{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden;margin-top:auto;padding-top:22px}.thumb{width:68px;height:54px;flex:0 0 auto;padding:0;border:1px solid transparent;opacity:.55;cursor:pointer;background:none}.thumb.active{opacity:1;border-color:#fff}.thumb img{width:100%;height:100%;object-fit:cover}
 @media(max-width:900px){
 .back-to-top{right:16px;bottom:16px;width:42px;height:42px}
 .site-header{padding:22px 20px}.site-role{display:none}main{padding:0 20px 42px}.intro{display:block;padding:58px 0 36px}.intro-copy{margin-top:24px}.filters{gap:5px}.filter{padding:8px 10px;font-size:12px}
